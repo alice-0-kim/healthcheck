@@ -8,5 +8,6 @@ healthcheck.admin:
 healthcheck.main:
   title: 'Health Check'
   description: 'example of how to make an admin settings page link'
+  parent: system.menu_parent
   route_name: healthcheck
   weight: 100
