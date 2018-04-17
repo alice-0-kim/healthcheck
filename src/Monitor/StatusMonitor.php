@@ -193,7 +193,7 @@ class StatusMonitor {
     $build['#cache']['max-age'] = 0;
 
     $db_status = FALSE;
-    $db_status = getDBStatus();
+    $db_status = $this->getDBStatus();
     //$files_status = _healthcheck_getFilesStatus();
     $files_status = FALSE;
     //$theme_status = _healthcheck_getThemeStatus();
