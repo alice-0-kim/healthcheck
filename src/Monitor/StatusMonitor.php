@@ -35,7 +35,8 @@ class StatusMonitor {
     $start = microtime();
 
     # we never want to cache the results of the check
-    drupal_page_is_cacheable(FALSE);
+    //drupal_page_is_cacheable(FALSE);
+    $build['#cache']['max-age'] = 0;
 
     $db_status = _ubc_healthcheck_getDBStatus();
     $files_status = _ubc_healthcheck_getFilesStatus();
