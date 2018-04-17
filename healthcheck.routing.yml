@@ -9,7 +9,7 @@ healthcheck:
 healthcheck.getDBstatus:
   path: '/heathcheck/scom/getDB'
   defaults:
-    _controller: '\Drupal\healthcheck\Monitor\StatusMonitor::_healthcheck_getDBStatus'
+    _controller: '\Drupal\healthcheck\Monitor\StatusMonitor::getDBStatus'
     _title: 'Get DB Status'
   requirements:
     _permission: 'access content'
