@@ -3,5 +3,6 @@ hello.content:
   defaults:
     _controller: '\Drupal\healthcheck\Monitor\StatusMonitor::content'
     _title: 'Health Check for SCOM'
+    _description: 'A page for SCOM to test the status of a site'
   requirements:
     _permission: 'access content'
