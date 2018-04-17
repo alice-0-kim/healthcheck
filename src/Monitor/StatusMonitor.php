@@ -63,8 +63,9 @@ class StatusMonitor {
   function getFilesStatus() {
 
     try {
-      $files_path = \Drupal::config('file_public_path')->get(conf_path() . '/files');
-      //$files_path = variable_get('file_public_path', conf_path() . '/files');
+      $conf_path = \Drupal::service('site.path');
+      $files_path = \Drupal::config('file_public_path')->get($conf_path . '/files');
+      //$files_path = variable_get('file_public_path', $conf_path . '/files');
       if(is_writable($files_path)) {
         return 1;  	
       }
