@@ -42,7 +42,7 @@ class StatusMonitor {
    * Return the status of the DB connection test
    * @return $html string
    */
-  function _healthcheck_setDBStatusHTML(&$db_status) {
+  function setDBStatusHTML(&$db_status) {
 
     $html  = '<h3>DB Connection:</h3>';
     if(is_numeric($db_status)) {
@@ -60,7 +60,7 @@ class StatusMonitor {
   /*
    * Test the File system
    */
-  function _healthcheck_getFilesStatus() {
+  function getFilesStatus() {
 
     try {  
       $files_path = variable_get('file_public_path', conf_path() . '/files');
@@ -78,7 +78,7 @@ class StatusMonitor {
    * Return the status of the File directory test
    * @return $html string
    */
-  function _healthcheck_setFileStatusHTML(&$files_status) {
+  function setFileStatusHTML(&$files_status) {
 
     $html  = '<h3>File System:</h3>';
     if(is_numeric($files_status)) {
@@ -96,7 +96,7 @@ class StatusMonitor {
   /*
    * Checks if CLF is enabled and if CDN assets are available
    */
-  function _healthcheck_getThemeStatus() {
+  function getThemeStatus() {
 
     try {  
       $themes = list_themes(TRUE);
@@ -118,7 +118,7 @@ class StatusMonitor {
    * Return the status of the CLF Theme asset test
    * @return $html string
    */
-  function _healthcheck_setThemeStatus(&$theme_status) {
+  function setThemeStatus(&$theme_status) {
 
     $html  = '<h3>CLF THEME:</h3>';
     if(is_numeric($theme_status)) {
@@ -137,7 +137,7 @@ class StatusMonitor {
   /*
    * Performs a curl request to see if CDN assets are reachable
    */
-  function _healthcheck_megatronStatus() {
+  function megatronStatus() {
 
     $curl = curl_init(CLF_ASSET_URL);
     curl_setopt($curl, CURLOPT_NOBODY, true);
@@ -160,7 +160,7 @@ class StatusMonitor {
   /* 
    * Calculates script execution time
    */
-  function _healtcheck_insertTimerString($start, $end) {
+  function insertTimerString($start, $end) {
 
     $total = $end - $start;
     return '<h4>Total Execution Time</h4><div>'.$total.' s</div>';
@@ -169,14 +169,14 @@ class StatusMonitor {
   /*
    * Test all status checks and return SCOM status string
    */
-  function _healthcheck_insertStatusString($status_array) {
+  function insertStatusString($status_array) {
 
     foreach($status_array as $status) {
       if(!is_numeric($status)) return STATUS_ERR;
     }
     return STATUS_OK;
   }
-/*
+  /*
    * Performs health checks and returns page html
    */
   public function content() {
@@ -192,29 +192,24 @@ class StatusMonitor {
     //drupal_page_is_cacheable(FALSE);
     $build['#cache']['max-age'] = 0;
 
-    $db_status = FALSE;
     $db_status = $this->getDBStatus();
-    //$files_status = _healthcheck_getFilesStatus();
-    $files_status = FALSE;
-    //$theme_status = _healthcheck_getThemeStatus();
-    $theme_status = FALSE;
+    $files_status = $this->getFilesStatus();
+    $theme_status = $this->getThemeStatus();
 
     # do other types of status checks here
 
     $html = '<div id="statuses">';
-    //$html .= _healthcheck_setDBStatusHTML($db_status);
-    $html .= '<div class="check-ok">CLF Assets Available</div>';
-    //$html .= _healthcheck_setFileStatusHTML($files_status);
-    //$html .= _healthcheck_setThemeStatus($theme_status);
+    $html .= $this->setDBStatusHTML($db_status);
+    $html .= $this->setFileStatusHTML($files_status);
+    $html .= $this->setThemeStatus($theme_status);
     $html .= '</div>';
 
     $end = microtime();
-    //$html .= _healtcheck_insertTimerString($start, $end);
+    $html .= $this->insertTimerString($start, $end);
 
-    //$html .= _healthcheck_insertStatusString(array($db_status, $files_status, $theme_status));
+    $html .= $this->insertStatusString(array($db_status, $files_status, $theme_status));
     return array(
       '#markup' => $html
     );
-    //return $html;
   }
 }
