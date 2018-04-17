@@ -1,0 +1,7 @@
+hello.content:
+  path: '/healthcheck/scom'
+  defaults:
+    _controller: '\Drupal\healthcheck\Monitor\StatusMonitor::content'
+    _title: 'Health Check for SCOM'
+  requirements:
+    _permission: 'access content'
