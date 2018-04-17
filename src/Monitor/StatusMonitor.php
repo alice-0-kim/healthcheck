@@ -26,7 +26,7 @@ class StatusMonitor {
   /*
    * Test the DB connection by querying the node table
    */
-  function _healthcheck_getDBStatus() {
+  function getDBStatus() {
 
     try {
       $result = db_query('SELECT COUNT(nid) AS ok FROM {node}')->fetch();
