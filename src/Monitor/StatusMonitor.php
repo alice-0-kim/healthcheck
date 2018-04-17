@@ -101,10 +101,11 @@ class StatusMonitor {
   function getThemeStatus() {
 
     try {  
-      $themes = list_themes(TRUE);
+      //$themes = list_themes(TRUE);
+      $themes = \Drupal::service('theme_handler')->listInfo();
     if(array_key_exists('megatron', $themes)) {
       if($themes['megatron']->status == 1) {
-        return _ubc_healthcheck_megatronStatus();
+        return megatronStatus();
       }
     }
     return -1;
