@@ -192,8 +192,8 @@ class StatusMonitor {
     //drupal_page_is_cacheable(FALSE);
     $build['#cache']['max-age'] = 0;
 
-    //$db_status = _healthcheck_getDBStatus();
     $db_status = FALSE;
+    $db_status = _healthcheck_getDBStatus();
     //$files_status = _healthcheck_getFilesStatus();
     $files_status = FALSE;
     //$theme_status = _healthcheck_getThemeStatus();
