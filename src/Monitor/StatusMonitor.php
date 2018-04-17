@@ -38,28 +38,28 @@ class StatusMonitor {
     //drupal_page_is_cacheable(FALSE);
     $build['#cache']['max-age'] = 0;
 
-    $db_status = _ubc_healthcheck_getDBStatus();
-    $files_status = _ubc_healthcheck_getFilesStatus();
-    $theme_status = _ubc_healthcheck_getThemeStatus();
+    $db_status = _healthcheck_getDBStatus();
+    $files_status = _healthcheck_getFilesStatus();
+    $theme_status = _healthcheck_getThemeStatus();
 
     # do other types of status checks here
 
     $html = '<div id="statuses">';
-    $html .= _ubc_healthcheck_setDBStatusHTML($db_status);
-    $html .= _ubc_healthcheck_setFileStatusHTML($files_status);
-    $html .= _ubc_healthcheck_setThemeStatus($theme_status);
+    $html .= _healthcheck_setDBStatusHTML($db_status);
+    $html .= _healthcheck_setFileStatusHTML($files_status);
+    $html .= _healthcheck_setThemeStatus($theme_status);
     $html .= '</div>';
 
     $end = microtime();
-    $html .= _ubc_healtcheck_insertTimerString($start, $end);
+    $html .= _healtcheck_insertTimerString($start, $end);
 
-    $html .= _ubc_healthcheck_insertStatusString(array($db_status, $files_status, $theme_status));
+    $html .= _healthcheck_insertStatusString(array($db_status, $files_status, $theme_status));
     return $html;
   }
   /*
    * Test the DB connection by querying the node table
    */
-  function _ubc_healthcheck_getDBStatus() {
+  function _healthcheck_getDBStatus() {
 
     try {
       $result = db_query('SELECT COUNT(nid) AS ok FROM {node}')->fetch();
@@ -75,7 +75,7 @@ class StatusMonitor {
    * Return the status of the DB connection test
    * @return $html string
    */
-  function _ubc_healthcheck_setDBStatusHTML(&$db_status) {
+  function _healthcheck_setDBStatusHTML(&$db_status) {
 
     $html  = '<h3>DB Connection:</h3>';
     if(is_numeric($db_status)) {
@@ -93,7 +93,7 @@ class StatusMonitor {
   /*
    * Test the File system
    */
-  function _ubc_healthcheck_getFilesStatus() {
+  function _healthcheck_getFilesStatus() {
 
     try {  
       $files_path = variable_get('file_public_path', conf_path() . '/files');
@@ -111,7 +111,7 @@ class StatusMonitor {
    * Return the status of the File directory test
    * @return $html string
    */
-  function _ubc_healthcheck_setFileStatusHTML(&$files_status) {
+  function _healthcheck_setFileStatusHTML(&$files_status) {
 
     $html  = '<h3>File System:</h3>';
     if(is_numeric($files_status)) {
@@ -129,7 +129,7 @@ class StatusMonitor {
   /*
    * Checks if CLF is enabled and if CDN assets are available
    */
-  function _ubc_healthcheck_getThemeStatus() {
+  function _healthcheck_getThemeStatus() {
 
     try {  
       $themes = list_themes(TRUE);
@@ -151,7 +151,7 @@ class StatusMonitor {
    * Return the status of the CLF Theme asset test
    * @return $html string
    */
-  function _ubc_healthcheck_setThemeStatus(&$theme_status) {
+  function _healthcheck_setThemeStatus(&$theme_status) {
 
     $html  = '<h3>CLF THEME:</h3>';
     if(is_numeric($theme_status)) {
@@ -170,7 +170,7 @@ class StatusMonitor {
   /*
    * Performs a curl request to see if CDN assets are reachable
    */
-  function _ubc_healthcheck_megatronStatus() {
+  function _healthcheck_megatronStatus() {
 
     $curl = curl_init(CLF_ASSET_URL);
     curl_setopt($curl, CURLOPT_NOBODY, true);
@@ -193,7 +193,7 @@ class StatusMonitor {
   /* 
    * Calculates script execution time
    */
-  function _ubc_healtcheck_insertTimerString($start, $end) {
+  function _healtcheck_insertTimerString($start, $end) {
 
     $total = $end - $start;
     return '<h4>Total Execution Time</h4><div>'.$total.' s</div>';
@@ -202,7 +202,7 @@ class StatusMonitor {
   /*
    * Test all status checks and return SCOM status string
    */
-  function _ubc_healthcheck_insertStatusString($status_array) {
+  function _healthcheck_insertStatusString($status_array) {
 
     foreach($status_array as $status) {
       if(!is_numeric($status)) return STATUS_ERR;
