@@ -1,4 +1,4 @@
-hello.content:
+healthcheck:
   path: '/healthcheck/scom'
   defaults:
     _controller: '\Drupal\healthcheck\Monitor\StatusMonitor::content'
