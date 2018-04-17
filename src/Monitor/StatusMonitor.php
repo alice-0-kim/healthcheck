@@ -105,7 +105,7 @@ class StatusMonitor {
       $themes = \Drupal::service('theme_handler')->listInfo();
     if(array_key_exists('galactus', $themes)) {
       if($themes['galactus']->status == 1) {
-        return galactusStatus();
+        return $this->galactusStatus();
       }
     }
     return -1;
