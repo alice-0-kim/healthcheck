@@ -3,6 +3,14 @@ healthcheck:
   defaults:
     _controller: '\Drupal\healthcheck\Monitor\StatusMonitor::content'
     _title: 'Health Check for SCOM'
-    _description: 'A page for SCOM to test the status of a site'
   requirements:
     _permission: 'access content'
+
+healthcheck.getDBstatus:
+  path: '/heathcheck/scom/getDB'
+  defaults:
+    _controller: '\Drupal\healthcheck\Monitor\StatusMonitor::_healthcheck_getDBStatus'
+    _title: 'Get DB Status'
+  requirements:
+    _permission: 'access content'
+    
