@@ -212,6 +212,9 @@ class StatusMonitor {
     //$html .= _healtcheck_insertTimerString($start, $end);
 
     //$html .= _healthcheck_insertStatusString(array($db_status, $files_status, $theme_status));
-    return $html;
+    return array(
+      '#markup' => $html
+    );
+    //return $html;
   }
 }
