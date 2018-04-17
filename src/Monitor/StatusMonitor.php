@@ -103,9 +103,9 @@ class StatusMonitor {
     try {  
       //$themes = list_themes(TRUE);
       $themes = \Drupal::service('theme_handler')->listInfo();
-    if(array_key_exists('megatron', $themes)) {
-      if($themes['megatron']->status == 1) {
-        return megatronStatus();
+    if(array_key_exists('galactus', $themes)) {
+      if($themes['galactus']->status == 1) {
+        return galactusStatus();
       }
     }
     return -1;
@@ -140,7 +140,7 @@ class StatusMonitor {
   /*
    * Performs a curl request to see if CDN assets are reachable
    */
-  function megatronStatus() {
+  function galactusStatus() {
 
     $curl = curl_init(CLF_ASSET_URL);
     curl_setopt($curl, CURLOPT_NOBODY, true);
