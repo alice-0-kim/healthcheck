@@ -22,40 +22,7 @@ define('STATUS_ERR', 	'<!-- SCOM HEALTH CHECK STATUS ERR -->');
 define('CLF_ASSET_URL', 'http://cdn.ubc.ca/clf/7.0.4/js/ubc-clf.min.js');
 
 class StatusMonitor {
-  /*
-   * Performs health checks and returns page html
-   */
-  public function content() {
-    # do not track this script via New Relic
-  	if(extension_loaded('newrelic')) {
-      newrelic_ignore_transaction();
-      newrelic_disable_autorum();
-    }
-
-    $start = microtime();
-
-    # we never want to cache the results of the check
-    //drupal_page_is_cacheable(FALSE);
-    $build['#cache']['max-age'] = 0;
-
-    $db_status = _healthcheck_getDBStatus();
-    $files_status = _healthcheck_getFilesStatus();
-    $theme_status = _healthcheck_getThemeStatus();
-
-    # do other types of status checks here
-
-    $html = '<div id="statuses">';
-    $html .= _healthcheck_setDBStatusHTML($db_status);
-    $html .= _healthcheck_setFileStatusHTML($files_status);
-    $html .= _healthcheck_setThemeStatus($theme_status);
-    $html .= '</div>';
-
-    $end = microtime();
-    $html .= _healtcheck_insertTimerString($start, $end);
-
-    $html .= _healthcheck_insertStatusString(array($db_status, $files_status, $theme_status));
-    return $html;
-  }
+  
   /*
    * Test the DB connection by querying the node table
    */
@@ -208,5 +175,39 @@ class StatusMonitor {
       if(!is_numeric($status)) return STATUS_ERR;
     }
     return STATUS_OK;
+  }
+/*
+   * Performs health checks and returns page html
+   */
+  public function content() {
+    # do not track this script via New Relic
+  	if(extension_loaded('newrelic')) {
+      newrelic_ignore_transaction();
+      newrelic_disable_autorum();
+    }
+
+    $start = microtime();
+
+    # we never want to cache the results of the check
+    //drupal_page_is_cacheable(FALSE);
+    $build['#cache']['max-age'] = 0;
+
+    $db_status = _healthcheck_getDBStatus();
+    $files_status = _healthcheck_getFilesStatus();
+    $theme_status = _healthcheck_getThemeStatus();
+
+    # do other types of status checks here
+
+    $html = '<div id="statuses">';
+    $html .= _healthcheck_setDBStatusHTML($db_status);
+    $html .= _healthcheck_setFileStatusHTML($files_status);
+    $html .= _healthcheck_setThemeStatus($theme_status);
+    $html .= '</div>';
+
+    $end = microtime();
+    $html .= _healtcheck_insertTimerString($start, $end);
+
+    $html .= _healthcheck_insertStatusString(array($db_status, $files_status, $theme_status));
+    return $html;
   }
 }
